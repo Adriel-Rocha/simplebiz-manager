@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -31,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -46,17 +45,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String email = jwtService.extractEmail(token);
-        String role = jwtService.extractRole(token);
+        String role = jwtService.extractRole(token); // ADMIN / USER
 
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(
-                        email,
-                        null,
-                        List.of(new SimpleGrantedAuthority("ROLE_" + role))
-                );
+        var authorities = List.of(
+                new SimpleGrantedAuthority("ROLE_" + role)
+        );
 
-        authentication.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
+        var authentication = new UsernamePasswordAuthenticationToken(
+                email,
+                null,
+                authorities
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

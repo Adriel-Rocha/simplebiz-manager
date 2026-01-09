@@ -32,12 +32,13 @@ public class JwtService {
 
   public String extractRole(String token) {
     return Jwts.parserBuilder()
-        .setSigningKey(getSigningKey())
-        .build()
-        .parseClaimsJws(token)
-        .getBody()
-        .get("role", String.class);
-  }
+            .setSigningKey(getSigningKey())
+            .build()
+            .parseClaimsJws(token)
+            .getBody()
+            .get("role", String.class);
+}
+
 
   public String extractEmail(String token) {
     return Jwts.parserBuilder()
