@@ -1,27 +1,32 @@
 package com.adriel.simplebiz.simplebiz_manager.entity;
 
-import java.math.BigDecimal;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
+@Table(name = "products")
 @Getter
 @Setter
 public class Product {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String name;
+    @Column(nullable = false)
+    private String name;
 
-  private String description;
+    private String description;
 
-  private BigDecimal price;
+    @Column(nullable = false)
+    private BigDecimal price;
 
+    @Column(nullable = false)
+    private Integer stock;
+
+    @Column(nullable = false)
+    private Boolean active = true;
 }
