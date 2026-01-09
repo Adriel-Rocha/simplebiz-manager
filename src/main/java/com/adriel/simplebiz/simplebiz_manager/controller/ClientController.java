@@ -9,6 +9,8 @@ import com.adriel.simplebiz.simplebiz_manager.dto.request.ClientRequest;
 import com.adriel.simplebiz.simplebiz_manager.dto.response.ClientResponse;
 import com.adriel.simplebiz.simplebiz_manager.service.ClientService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
@@ -21,7 +23,7 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ClientResponse create(@RequestBody ClientRequest request) {
+    public ClientResponse create(@Valid @RequestBody ClientRequest request) {
         return clientService.create(request);
     }
 
@@ -38,7 +40,7 @@ public class ClientController {
     @PutMapping("/{id}")
     public ClientResponse update(
             @PathVariable Long id,
-            @RequestBody ClientRequest request
+            @Valid @RequestBody ClientRequest request
     ) {
         return clientService.update(id, request);
     }
