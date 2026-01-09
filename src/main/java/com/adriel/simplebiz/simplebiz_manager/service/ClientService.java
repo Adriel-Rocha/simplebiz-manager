@@ -2,6 +2,8 @@ package com.adriel.simplebiz.simplebiz_manager.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.adriel.simplebiz.simplebiz_manager.dto.request.ClientRequest;
@@ -34,6 +36,12 @@ public class ClientService {
     return mapper.toResponse(client);
   }
 
+  public Page<ClientResponse> findAll(Pageable pageable) {
+    return clientRepository.findAll(pageable)
+            .map(mapper::toResponse);
+}
+
+  @Deprecated
   public List<ClientResponse> findAll() {
     return clientRepository.findAll()
         .stream()
