@@ -3,6 +3,7 @@ package com.adriel.simplebiz.simplebiz_manager.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,42 +17,49 @@ import jakarta.validation.Valid;
 @RequestMapping("/clients")
 public class ClientController {
 
-  private final ClientService clientService;
+    private final ClientService clientService;
 
-  public ClientController(ClientService clientService) {
-    this.clientService = clientService;
-  }
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
+    }
 
-  @PreAuthorize("hasRole('ADMIN')")
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  public ClientResponse create(@Valid @RequestBody ClientRequest request) {
-    return clientService.create(request);
-  }
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
+    public ResponseEntity<ClientResponse> create(@Valid @RequestBody ClientRequest request) {
 
-  @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-  public Page<ClientResponse> listClients(Pageable pageable) {
-    return clientService.findAll(pageable);
-  }
+        ClientResponse response = clientService.create(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
-  @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-  @GetMapping("/{id}")
-  public ClientResponse findById(@PathVariable Long id) {
-    return clientService.findById(id);
-  }
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @GetMapping
+    public ResponseEntity<Page<ClientResponse>> listClients(Pageable pageable) {
 
-  @PreAuthorize("hasRole('ADMIN')")
-  @PutMapping("/{id}")
-  public ClientResponse update(
-      @PathVariable Long id,
-      @Valid @RequestBody ClientRequest request) {
-    return clientService.update(id, request);
-  }
+        Page<ClientResponse> page = clientService.findAll(pageable);
+        return ResponseEntity.ok(page);
+    }
 
-  @PreAuthorize("hasRole('ADMIN')")
-  @DeleteMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void delete(@PathVariable Long id) {
-    clientService.delete(id);
-  }
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientResponse> findById(@PathVariable Long id) {
+
+        ClientResponse response = clientService.findById(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientResponse> update(@PathVariable Long id,@Valid @RequestBody ClientRequest request) {
+
+        ClientResponse response = clientService.update(id, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+
+        clientService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

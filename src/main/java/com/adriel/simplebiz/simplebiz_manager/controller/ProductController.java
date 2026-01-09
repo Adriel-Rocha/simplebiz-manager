@@ -28,28 +28,25 @@ public class ProductController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
-  public ResponseEntity<ProductResponse> create(
-      @RequestBody @Valid ProductRequest request) {
-    ProductResponse response = service.create(request);
-    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  public ResponseEntity<ProductResponse> create(@RequestBody @Valid ProductRequest request) {
+      ProductResponse response = service.create(request);
+      return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @GetMapping
   public ResponseEntity<Page<ProductResponse>> findAll(@PageableDefault(size = 10, sort = "id") Pageable pageable) {
-    return ResponseEntity.ok(service.findAll(pageable));
+      return ResponseEntity.ok(service.findAll(pageable));
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<ProductResponse> findById(@PathVariable Long id) {
-    return ResponseEntity.ok(service.findById(id));
+      return ResponseEntity.ok(service.findById(id));
   }
 
   @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/{id}")
-  public ResponseEntity<ProductResponse> update(
-      @PathVariable Long id,
-      @RequestBody @Valid ProductRequest request) {
-    return ResponseEntity.ok(service.update(id, request));
+  public ResponseEntity<ProductResponse> update(@PathVariable Long id,@RequestBody @Valid ProductRequest request) {
+      return ResponseEntity.ok(service.update(id, request));
   }
 
   @PreAuthorize("hasRole('ADMIN')")

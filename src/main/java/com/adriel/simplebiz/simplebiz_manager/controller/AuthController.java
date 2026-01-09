@@ -24,7 +24,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         String token = authService.login(request.email(), request.password());
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 
     @PostMapping("/register")
@@ -32,8 +32,6 @@ public class AuthController {
             @RequestBody @Valid RegisterRequest request) {
 
         authService.register(request);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(new AuthResponse("User registered successfully"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse("User registered successfully"));
     }
 }
