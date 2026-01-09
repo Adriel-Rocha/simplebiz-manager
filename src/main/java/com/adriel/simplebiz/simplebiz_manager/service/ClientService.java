@@ -10,6 +10,7 @@ import com.adriel.simplebiz.simplebiz_manager.dto.request.ClientRequest;
 import com.adriel.simplebiz.simplebiz_manager.dto.response.ClientResponse;
 import com.adriel.simplebiz.simplebiz_manager.entity.Client;
 import com.adriel.simplebiz.simplebiz_manager.exception.EmailAlreadyExistsException;
+import com.adriel.simplebiz.simplebiz_manager.exception.ResourceNotFoundException;
 import com.adriel.simplebiz.simplebiz_manager.mapper.ClientMapper;
 import com.adriel.simplebiz.simplebiz_manager.repository.ClientRepository;
 
@@ -51,7 +52,7 @@ public class ClientService {
 
   public ClientResponse findById(Long id) {
     Client client = clientRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
     return toResponse(client);
   }
@@ -59,7 +60,7 @@ public class ClientService {
   public ClientResponse update(Long id, ClientRequest request) {
 
     Client client = clientRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
     if (!client.getEmail().equals(request.getEmail()) &&
         clientRepository.existsByEmail(request.getEmail())) {

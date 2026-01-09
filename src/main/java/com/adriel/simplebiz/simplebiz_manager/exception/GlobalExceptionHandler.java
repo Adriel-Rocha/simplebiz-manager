@@ -1,6 +1,5 @@
 package com.adriel.simplebiz.simplebiz_manager.exception;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,40 +12,49 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public Map<String, Object> handleValidationErrors(
-      MethodArgumentNotValidException ex) {
-    Map<String, String> errors = new HashMap<>();
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrorResponse handleValidationErrors(MethodArgumentNotValidException ex) {
 
-    ex.getBindingResult()
-        .getFieldErrors()
-        .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult()
+            .getFieldErrors()
+            .forEach(err -> errors.put(err.getField(), err.getDefaultMessage()));
 
-    Map<String, Object> response = new HashMap<>();
-    response.put("timestamp", LocalDateTime.now());
-    response.put("status", HttpStatus.BAD_REQUEST.value());
-    response.put("errors", errors);
+        return new ApiErrorResponse(
+                400,
+                "VALIDATION_ERROR",
+                errors
+        );
+    }
 
-    return response;
-  }
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiErrorResponse handleEmailExists(EmailAlreadyExistsException ex) {
+        return new ApiErrorResponse(
+                409,
+                "EMAIL_ALREADY_EXISTS",
+                ex.getMessage()
+        );
+    }
 
-  @ExceptionHandler(RuntimeException.class)
-  public Map<String, Object> handleRuntimeException(RuntimeException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("timestamp", LocalDateTime.now());
-    response.put("status", HttpStatus.BAD_REQUEST.value());
-    response.put("message", ex.getMessage());
-    return response;
-  }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrorResponse handleNotFound(ResourceNotFoundException ex) {
+        return new ApiErrorResponse(
+                404,
+                "RESOURCE_NOT_FOUND",
+                ex.getMessage()
+        );
+    }
 
-  @ExceptionHandler(EmailAlreadyExistsException.class)
-  @ResponseStatus(HttpStatus.CONFLICT)
-  public Map<String, Object> handleEmailAlreadyExists(
-      EmailAlreadyExistsException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("timestamp", LocalDateTime.now());
-    response.put("status", HttpStatus.CONFLICT.value());
-    response.put("message", ex.getMessage());
-    return response;
-  }
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiErrorResponse handleGeneric(Exception ex) {
+        return new ApiErrorResponse(
+                500,
+                "INTERNAL_SERVER_ERROR",
+                "Erro interno inesperado"
+        );
+    }
 }

@@ -1,7 +1,5 @@
 package com.adriel.simplebiz.simplebiz_manager.service;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -9,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.adriel.simplebiz.simplebiz_manager.dto.request.ProductRequest;
 import com.adriel.simplebiz.simplebiz_manager.dto.response.ProductResponse;
 import com.adriel.simplebiz.simplebiz_manager.entity.Product;
+import com.adriel.simplebiz.simplebiz_manager.exception.ResourceNotFoundException;
 import com.adriel.simplebiz.simplebiz_manager.mapper.ProductMapper;
 import com.adriel.simplebiz.simplebiz_manager.repository.ProductRepository;
 
@@ -36,14 +35,14 @@ public class ProductService {
 
     public ProductResponse findById(Long id) {
         Product product = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
 
         return mapper.toResponse(product);
     }
 
     public ProductResponse update(Long id, ProductRequest request) {
         Product product = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
 
         mapper.updateEntity(product, request);
         repository.save(product);
