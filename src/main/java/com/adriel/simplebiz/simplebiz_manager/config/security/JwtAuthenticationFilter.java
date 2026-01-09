@@ -44,21 +44,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String email = jwtService.extractEmail(token);
-        String role = jwtService.extractRole(token); // ADMIN / USER
+        try {
+            String email = jwtService.extractEmail(token);
+            String role = jwtService.extractRole(token);
 
-        var authorities = List.of(
-                new SimpleGrantedAuthority("ROLE_" + role)
-        );
+            var authorities = List.of(
+                    new SimpleGrantedAuthority("ROLE_" + role)
+            );
 
-        var authentication = new UsernamePasswordAuthenticationToken(
-                email,
-                null,
-                authorities
-        );
+            var authentication = new UsernamePasswordAuthenticationToken(
+                    email,
+                    null,
+                    authorities
+            );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
+        } catch (Exception ignored) {
+        }
 
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.startsWith("/auth")
+            || path.startsWith("/swagger-ui")
+            || path.startsWith("/v3/api-docs");
     }
 }
