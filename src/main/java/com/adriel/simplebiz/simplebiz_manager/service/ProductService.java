@@ -2,6 +2,8 @@ package com.adriel.simplebiz.simplebiz_manager.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.adriel.simplebiz.simplebiz_manager.dto.request.ProductRequest;
@@ -27,12 +29,10 @@ public class ProductService {
         return mapper.toResponse(product);
     }
 
-    public List<ProductResponse> findAll() {
-        return repository.findAll()
-                .stream()
-                .map(mapper::toResponse)
-                .toList();
-    }
+    public Page<ProductResponse> findAll(Pageable pageable) {
+    return repository.findAll(pageable)
+            .map(mapper::toResponse);
+}
 
     public ProductResponse findById(Long id) {
         Product product = repository.findById(id)
