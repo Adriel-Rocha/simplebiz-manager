@@ -1,7 +1,5 @@
 package com.adriel.simplebiz.simplebiz_manager.controller;
 
-import java.util.List;
-
 import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Page;
