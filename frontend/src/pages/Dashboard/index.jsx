@@ -1,13 +1,5 @@
-import './style.css'
+const Dashboard = () => {
+  return <h1>Dashboard</h1>;
+};
 
-function Dashboard() {
-
-  return (
-
-    <>
-    </>
-
-  )
-}
-
-export default Dashboard
+export default Dashboard;
