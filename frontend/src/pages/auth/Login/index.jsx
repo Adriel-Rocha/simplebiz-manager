@@ -29,8 +29,9 @@ const Login = () => {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <form onSubmit={handleSubmit} className="login-card">
       <h1>Login</h1>
+
+      <form onSubmit={handleSubmit} className="login-card">
         <input
           type="email"
           placeholder="Email"

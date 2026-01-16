@@ -1,18 +1,20 @@
 .login-container {
   height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.login-container h1 {
+  margin-bottom: 16px;
+  text-align: center;
 }
 
 .login-card {
   width: 360px;
 }
 
-.login-card h1 {
-  margin-bottom: 16px;
-  text-align: center;
-}
 
 .login-card input {
   width: 100%;
