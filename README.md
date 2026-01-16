@@ -4,7 +4,7 @@ Sistema de gestão para pequenas empresas, com backend robusto em Java/Spring Bo
 
 [![Java](https://img.shields.io/badge/Java-17-blue)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.9-brightgreen)](https://spring.io/projects/spring-boot)
-[![React](https://img.shields.io/badge/React-18-blue)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 ---
