@@ -8,12 +8,12 @@ import ClientForm from "../pages/clients/ClientForm";
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="*" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
-      <Route path="*" element={<Login />} />
-      <Route path="/clients" element={<ClientList />} />
-      <Route path="/clients/new" element={<ClientForm />} />
-      <Route path="/clients/:id" element={<ClientForm />} />
+      <Route path="/clients" element={<ProtectedRoute><ClientList /></ProtectedRoute>} />
+      <Route path="/clients/new" element={<ProtectedRoute><ClientForm /></ProtectedRoute>} />
+      <Route path="/clients/:id" element={<ProtectedRoute><ClientForm /></ProtectedRoute>} />
     </Routes>
   );
 };
