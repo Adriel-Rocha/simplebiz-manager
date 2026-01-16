@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login as loginService } from "../../../api/authService";
 import { useAuth } from "../../../hooks/useAuth";
+import "./styles.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,12 +25,12 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="login-container">
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-card">
+      <h1>Login</h1>
         <input
           type="email"
           placeholder="Email"
@@ -46,7 +47,7 @@ const Login = () => {
           required
         />
 
-        <button type="submit">Entrar</button>
+        <button type="submit" className="btn-primary">Entrar</button>
       </form>
     </div>
   );
