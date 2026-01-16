@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createClient, getClientById, updateClient } from "../../../api/clientService";
 import { useNavigate, useParams } from "react-router-dom";
+import './styles.css';
 
 export default function ClientForm() {
   const [form, setForm] = useState({
@@ -49,18 +50,18 @@ export default function ClientForm() {
   }
 
   return (
-    <div>
+    <div className="form-container">
       <h1>{id ? "Editar Cliente" : "Novo Cliente"}</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input name="name" value={form.name} onChange={handleChange} />
-        <input name="email" value={form.email} onChange={handleChange} />
-        <input name="phone" value={form.phone} onChange={handleChange} />
+      <form onSubmit={handleSubmit} className="client-form">
+        <input name="name" value={form.name} placeholder="Nome" onChange={handleChange} />
+        <input name="email" value={form.email} placeholder="Email" onChange={handleChange} />
+        <input name="phone" value={form.phone} placeholder="Celular" onChange={handleChange} />
 
-        <button type="submit">Salvar</button>
-        <button type="button" onClick={() => navigate("/clients")}>
-          Cancelar
-        </button>
+        <div className="form-actions">
+          <button type="submit" className="btn-primary">Salvar</button>
+          <button type="button" className="btn-danger" onClick={() => navigate("/clients")}>Cancelar</button>
+        </div>
       </form>
     </div>
   );

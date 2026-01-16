@@ -1,0 +1,29 @@
+.form-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container h1 {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.client-form {
+  max-width: 600px;
+}
+
+.client-form input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  border: 1px solid var(--gray-300);
+  border-radius: 6px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+}
