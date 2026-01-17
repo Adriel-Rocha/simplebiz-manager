@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getClients, deleteClient } from "../../../api/clientService";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
+import "./styles.css";
 
 export default function ClientList() {
   const [clients, setClients] = useState([]);
@@ -30,38 +31,52 @@ export default function ClientList() {
   }, [page]);
 
   return (
-    <div>
-      <h1>Clientes</h1>
+    <div className="container">
+      <div className="client-header">
+        <h1>Clientes</h1>
 
-      <button onClick={() => navigate("/clients/new")}>
-        Novo Cliente
-      </button>
+        {user?.role === "ADMIN" && (
+          <button className="btn-primary" onClick={() => navigate("/clients/new")}>Novo Cliente</button>
+        )}
+      </div>
 
-      <ul>
-        {clients.map((client) => (
-          <li key={client.id}>
-            {client.name}
-            <button onClick={() => navigate(`/clients/${client.id}`)}>
-              Editar
-            </button>
-            <button onClick={() => deleteClient(client.id)}>
-              Excluir
-            </button>
-          </li>
-        ))}
-      </ul>
+      <table className="client-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            {user?.role === "ADMIN" && <th>Ações</th>}
+          </tr>
+        </thead>
 
-      <div>
-        <button disabled={page === 0} onClick={() => setPage(page - 1)}>
-          Anterior
-        </button>
-        <span>{page + 1} / {totalPages}</span>
-        <button
-          disabled={page + 1 >= totalPages}
-          onClick={() => setPage(page + 1)}
-        >
-          Próxima
-        </button>
+        <tbody>
+          {clients.map((client) => (
+            <tr key={client.id}>
+              <td>{client.name}</td>
+              <td>{client.email}</td>
+              <td>{client.phone}</td>
+
+              {user?.role === "ADMIN" && (
+                <td>
+                  <button className="btn-warning" onClick={() => navigate(`/clients/${client.id}`)}>Editar</button>
+                  &nbsp;&nbsp;&nbsp;
+                  <button className="btn-danger" onClick={() => deleteClient(client.id)}>Excluir</button>
+                </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="pagination">
+        <button disabled={page === 0} onClick={() => setPage(page - 1)}>Anterior</button>
+
+        <span>
+          {page + 1} / {totalPages}
+        </span>
+
+        <button disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>Próxima</button>
       </div>
     </div>
   );
