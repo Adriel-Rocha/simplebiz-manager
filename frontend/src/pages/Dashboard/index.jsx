@@ -1,12 +1,33 @@
-import Header from "../../components/layout/Header";
+import "./styles.css";
+import { useAuth } from "../../hooks/useAuth";
 
-const Dashboard = () => {
+export default function Dashboard() {
+  const { user } = useAuth();
+
   return (
-    <>
-      <Header />
+    <div className="dashboard-container">
       <h1>Dashboard</h1>
-    </>
-  )
-};
 
-export default Dashboard;
+      <p className="welcome">
+        Bem-vindo, <strong>{user?.email}</strong>
+      </p>
+
+      <div className="dashboard-cards">
+        <div className="card">
+          <h3>Clientes</h3>
+          <span>—</span>
+        </div>
+
+        <div className="card">
+          <h3>Produtos</h3>
+          <span>—</span>
+        </div>
+
+        <div className="card">
+          <h3>Perfil</h3>
+          <span>{user?.role}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
