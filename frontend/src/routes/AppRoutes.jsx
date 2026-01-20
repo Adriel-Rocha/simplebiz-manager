@@ -1,19 +1,24 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/auth/Login";
 import Dashboard from "../pages/Dashboard";
-import ProtectedRoute from "../components/layout/ProtectedRoute";
 import ClientList from "../pages/clients/ClientList";
 import ClientForm from "../pages/clients/ClientForm";
+import ProtectedRoute from "../components/layout/ProtectedRoute";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="*" element={<Login />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
-      <Route path="/clients" element={<ProtectedRoute><ClientList /></ProtectedRoute>} />
-      <Route path="/clients/new" element={<ProtectedRoute><ClientForm /></ProtectedRoute>} />
-      <Route path="/clients/:id" element={<ProtectedRoute><ClientForm /></ProtectedRoute>} />
+
+      <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/clients" element={<ClientList />} />
+          <Route path="/clients/new" element={<ClientForm />} />
+          <Route path="/clients/:id" element={<ClientForm />} />
+      </Route>
+
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 };
