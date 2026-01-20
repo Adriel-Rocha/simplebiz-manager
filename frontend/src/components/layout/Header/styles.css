@@ -1,0 +1,25 @@
+.app-header {
+  height: 60px;
+  background: #1f2937;
+  color: #fff;
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-user button {
+  background: #ef4444;
+  border: none;
+  padding: 6px 12px;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}

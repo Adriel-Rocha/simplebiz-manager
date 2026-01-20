@@ -1,21 +1,17 @@
+import "./styles.css";
 import { useAuth } from "../../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
 
-const Header = () => {
-  const { logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+export default function Header() {
+  const { user, logout } = useAuth();
 
   return (
-    <header>
-      <h3>SimpleBiz Manager</h3>
-      <button onClick={handleLogout}>Sair</button>
+    <header className="app-header">
+      <h2>SimpleBiz</h2>
+
+      <div className="header-user">
+        <span>{user?.email}</span>
+        <button onClick={logout}>Sair</button>
+      </div>
     </header>
   );
-};
-
-export default Header;
+}
