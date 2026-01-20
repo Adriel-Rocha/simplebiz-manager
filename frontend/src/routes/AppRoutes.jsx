@@ -4,6 +4,7 @@ import Dashboard from "../pages/Dashboard";
 import ClientList from "../pages/clients/ClientList";
 import ClientForm from "../pages/clients/ClientForm";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
+import AppLayout from "../components/layout/AppLayout";
 
 const AppRoutes = () => {
   return (
@@ -11,11 +12,13 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
 
       <Route element={<ProtectedRoute />}>
+        <Route element={<AppLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/clients" element={<ClientList />} />
           <Route path="/clients/new" element={<ClientForm />} />
           <Route path="/clients/:id" element={<ClientForm />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<Navigate to="/login" replace />} />
