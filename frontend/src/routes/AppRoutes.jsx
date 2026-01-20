@@ -6,6 +6,7 @@ import ClientForm from "../pages/clients/ClientForm";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
 import AppLayout from "../components/layout/AppLayout";
 import ProductList from "../pages/products/ProductList";
+import ProductForm from "../pages/products/ProductForm";
 
 const AppRoutes = () => {
   return (
@@ -20,6 +21,9 @@ const AppRoutes = () => {
           <Route path="/clients/new" element={<ClientForm />} />
           <Route path="/clients/:id" element={<ClientForm />} />
           <Route path="/products" element={<ProductList />} />
+          <Route path="/products/new" element={<ProductForm />} />
+          <Route path="/products/:id" element={<ProductForm />} />
+
         </Route>
       </Route>
 

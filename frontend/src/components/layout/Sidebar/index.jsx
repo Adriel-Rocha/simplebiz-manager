@@ -14,6 +14,10 @@ export default function Sidebar() {
         <NavLink to="/clients" className="sidebar-link">
           Clientes
         </NavLink>
+
+        <NavLink to="/products" className="sidebar-link">
+          Produtos
+        </NavLink>
       </nav>
     </aside>
   );
