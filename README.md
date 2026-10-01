@@ -1,177 +1,223 @@
 # SimpleBiz Manager
 
-Sistema de gestão para pequenas empresas, com backend robusto em Java/Spring Boot e frontend moderno em React.
+## A practical business management system for small businesses
 
-[![Java](https://img.shields.io/badge/Java-17-blue)](https://www.oracle.com/java/)
-[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.9-brightgreen)](https://spring.io/projects/spring-boot)
-[![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+SimpleBiz Manager is a full-stack business management application designed to centralize customer and product operations in a simple, secure and maintainable system.
 
----
+This project is a **portfolio demonstration based on common real-world business needs**. It is not presented as a system currently used by a real client.
 
-## 📌 Tabela de Conteúdos
+## Business Problem
 
-- [Sobre o Projeto](#sobre-o-projeto)  
-- [Tecnologias](#tecnologias)  
-- [Funcionalidades](#funcionalidades)  
-- [Instalação](#instalação)  
-- [API / Swagger](#api--swagger)  
-- [Autenticação](#autenticação)  
-- [Exemplos de Requisições](#exemplos-de-requisições)  
-- [Contribuindo](#contribuindo)  
-- [Licença](#licença)  
+Small businesses often rely on spreadsheets, disconnected tools and manual processes to manage customers and products.
 
----
+SimpleBiz demonstrates how these operations can be centralized in a web application with:
 
-## Sobre o Projeto
+- secure authentication
+- user roles and permissions
+- customer management
+- product management
+- data validation
+- pagination and sorting
+- documented REST APIs
+- responsive frontend
 
-O **SimpleBiz Manager** é um sistema completo para gerenciar clientes e produtos de pequenas empresas.  
-Ele possui autenticação segura com JWT, controle de roles (ADMIN / USER), validação de dados, paginação e ordenação, além de documentação completa da API via Swagger.
+## Solution
 
-> Este projeto é ideal para portfólio e demonstração de habilidades em backend e frontend fullstack.
+The application provides a centralized interface where authorized users can manage business information through a web dashboard backed by a secure REST API.
 
----
+### Main flow
 
-## Tecnologias
+```text
+User
+  ↓
+Authentication
+  ↓
+Role & Permission Check
+  ↓
+Business Dashboard
+  ↓
+Customers / Products
+  ↓
+REST API
+  ↓
+Database
+```
 
-**Backend:**
-- Java 17
-- Spring Boot
-- Spring Security + JWT
-- Spring Data JPA
-- MySQL
-- Swagger / OpenAPI
+## Main Features
 
-**Frontend:**
-- React
-- Axios
-- React Router
-- Dashboard simples e responsivo
+### Authentication & Authorization
 
----
+- JWT authentication
+- Spring Security
+- Role-based access
+- ADMIN and USER roles
+- Protected endpoints
 
-## Funcionalidades
+### Customer Management
 
-- Cadastro e login de usuários com JWT  
-- Controle de acesso por roles (ADMIN / USER)  
-- CRUD de clientes e produtos  
-- Validação de dados e email único  
-- Paginação e ordenação de resultados  
-- Documentação da API via Swagger
+- Create customers
+- List customers
+- Update customers
+- Delete customers
+- Validation
+- Pagination
+- Sorting
 
----
+### Product Management
 
-## Instalação
+- Create products
+- List products
+- Update products
+- Delete products
+- Validation
+- Pagination
+- Sorting
+
+### API Documentation
+
+The REST API is documented with OpenAPI/Swagger, making the system easier to understand, test and integrate.
+
+## Technology Stack
 
 ### Backend
 
-1. Clone o repositório:
+- Java 17
+- Spring Boot
+- Spring Security
+- JWT
+- Spring Data JPA
+- Hibernate
+- Bean Validation
+- OpenAPI / Swagger
+
+### Frontend
+
+- React
+- Axios
+- React Router
+- Responsive UI
+
+### Database
+
+- MySQL
+
+### Development
+
+- Maven
+- Git
+- Docker-ready architecture
+
+## Architecture
+
+```text
+┌──────────────────────┐
+│      React App       │
+│      Frontend        │
+└──────────┬───────────┘
+           │ HTTP / JSON
+           ▼
+┌──────────────────────┐
+│    Spring Boot API   │
+│                      │
+│  Security / JWT      │
+│  Controllers         │
+│  Services            │
+│  Repositories        │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│        MySQL         │
+└──────────────────────┘
+```
+
+## Project Status
+
+This is an evolving demonstration project.
+
+The current version focuses on the core business-management workflow. Future iterations may include dashboards, reporting, audit history, additional business entities and deployment improvements.
+
+## Screenshots
+
+Screenshots will be added as the interface is refined.
+
+## Running Locally
+
+### Backend
+
+Clone the repository:
 
 ```bash
 git clone https://github.com/Adriel-Rocha/simplebiz-manager.git
 cd simplebiz-manager
 ```
-2. Configure o application.properties com seu banco MySQL:
 
-```bash
-Properties
-spring.datasource.url=jdbc:mysql://localhost:3306/simplebiz?useSSL=false&serverTimezone=UTC
-spring.datasource.username=root
-spring.datasource.password=senha
-spring.jpa.hibernate.ddl-auto=update
-```
-3. Rode a aplicação:
+Configure your MySQL connection in the application configuration.
+
+Then run:
 
 ```bash
 ./mvnw spring-boot:run
 ```
-### Frontend
 
-1. Entre na pasta do frontend:
+### Frontend
 
 ```bash
 cd frontend
-```
-2. Instale dependências e rode:
-
-```bash
 npm install
 npm start
 ```
 
----
+## API
 
-## API / Swagger
-A **documentação completa da API** pode ser acessada via Swagger:
+After starting the backend, Swagger/OpenAPI is available at:
 
-```bash
+```text
 http://localhost:8080/swagger-ui/index.html
 ```
----
 
-## Autenticação
-- Endpoint de login:
-```bash
-/auth/login
-```
-- Retorna um JWT que deve ser enviado no header de todas as requisições protegidas:
-  
-```bash
-Authorization: Bearer <TOKEN>
-```
-- Roles disponíveis:
-  - ADMIN → acesso completo
-  - USER → acesso limitado (leitura)
+## Example Authentication Flow
 
----
-
-## Exemplos de Requisições
-
-**Login**
-
-```bash
-Http
+```http
 POST /auth/login
 Content-Type: application/json
+```
 
+Example:
+
+```json
 {
   "email": "admin@simplebiz.com",
   "password": "123456"
 }
 ```
-**Criar Cliente (ADMIN)**
 
-```bash
-Copiar código
-Http
-POST /clients
-Authorization: Bearer <TOKEN>
-Content-Type: application/json
+The API returns a JWT token that can be used to access protected endpoints.
 
-{
-  "name": "João Silva",
-  "email": "joao@email.com",
-  "phone": "123456789"
-}
-```
-**Listar Clientes com Paginação**
+## Why This Project Matters
 
-```bash
-Http
-GET /clients?page=0&size=10&sort=name,asc
-Authorization: Bearer <TOKEN>
-```
+SimpleBiz demonstrates more than isolated CRUD operations.
 
----
+It brings together:
 
-## Contribuindo
-**Pull requests são bem-vindos!**
-- Para alterações significativas, abra uma issue antes de enviar PR.
+- backend architecture
+- authentication and authorization
+- relational data
+- frontend integration
+- API documentation
+- validation
+- business-oriented workflows
 
----
+The goal is to demonstrate how common business requirements can be translated into a maintainable full-stack application.
 
-## Licença
-**MIT © Adriel Rocha**
+## About
 
+Built by **Adriel Rocha**.
 
----
+Full-Stack Developer focused on business systems, APIs, integrations and automation.
+
+🌎 Available for remote projects worldwide.
+
+📧 contato.adriel.dev@gmail.com
+
+🔗 https://github.com/Adriel-Rocha
