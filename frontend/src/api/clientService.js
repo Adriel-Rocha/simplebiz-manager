@@ -1,7 +1,9 @@
 import api from "./api";
 
-export const getClients = (page = 0, size = 10) =>
-  api.get(`/clients?page=${page}&size=${size}`);
+export const getClients = (page = 0, size = 10, sort = "id,asc") =>
+  api.get(
+    `/clients?page=${page}&size=${size}&sort=${encodeURIComponent(sort)}`
+  );
 
 export const getClientById = (id) =>
   api.get(`/clients/${id}`);

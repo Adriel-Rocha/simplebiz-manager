@@ -1,7 +1,9 @@
 import api from "./api";
 
-export const getProducts = (page = 0, size = 10) =>
-  api.get(`/products?page=${page}&size=${size}`);
+export const getProducts = (page = 0, size = 10, sort = "id,asc") =>
+  api.get(
+    `/products?page=${page}&size=${size}&sort=${encodeURIComponent(sort)}`
+  );
 
 export const getProductById = (id) =>
   api.get(`/products/${id}`);
