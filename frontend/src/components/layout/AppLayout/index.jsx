@@ -11,9 +11,11 @@ export default function AppLayout() {
 
       <div className="app-content">
         <Header />
+
         <main className="page-content">
           <Outlet />
         </main>
+
         <Footer />
       </div>
     </div>

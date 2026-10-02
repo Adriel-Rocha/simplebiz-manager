@@ -1,7 +1,9 @@
 package com.adriel.simplebiz.simplebiz_manager.config.security;
 
+import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,9 +25,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
+  private final String allowedOrigins;
 
-  public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+  public SecurityConfig(
+      JwtAuthenticationFilter jwtAuthenticationFilter,
+      @Value("${app.cors.allowed-origins:http://localhost:5173}") String allowedOrigins) {
+
     this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    this.allowedOrigins = allowedOrigins;
   }
 
   @Bean
@@ -36,18 +43,16 @@ public class SecurityConfig {
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests(auth -> auth
 
-            // preflight
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-            // públicas
             .requestMatchers(
                 "/auth/**",
+                "/health",
                 "/swagger",
                 "/swagger-ui/**",
                 "/v3/api-docs/**")
             .permitAll()
 
-            // CLIENTS
             .requestMatchers(HttpMethod.GET, "/clients/**")
             .hasAnyRole("ADMIN", "USER")
 
@@ -60,9 +65,8 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.DELETE, "/clients/**")
             .hasRole("ADMIN")
 
-            // qualquer outra
             .anyRequest().authenticated())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
     http.addFilterBefore(
         jwtAuthenticationFilter,
@@ -73,14 +77,21 @@ public class SecurityConfig {
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
+    List<String> origins = Arrays.stream(allowedOrigins.split(","))
+        .map(String::trim)
+        .filter(origin -> !origin.isBlank())
+        .toList();
+
     CorsConfiguration config = new CorsConfiguration();
-    config.setAllowedOrigins(List.of("http://localhost:5173"));
+    config.setAllowedOrigins(origins);
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     config.setAllowedHeaders(List.of("*"));
     config.setAllowCredentials(true);
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
     source.registerCorsConfiguration("/**", config);
+
     return source;
   }
 
